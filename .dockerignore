@@ -1,0 +1,22 @@
+# build outputs and runtime state
+practica.db
+labdata/
+
+# editor / OS
+.git
+.gitignore
+.gitattributes
+.vscode
+.idea
+.DS_Store
+*.swp
+
+# logs and personal scratch
+*.log
+solves.txt
+
+# docker artifacts
+Dockerfile
+.dockerignore
+docker-compose.yml
+docker-compose.*.yml

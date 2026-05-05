@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 14 — Network Tools</title>
+<link rel="stylesheet" href="/static/style.css">
+<style>
+  .container { max-width: 760px; }
+  .ping-form {
+    display: flex;
+    gap: 0.5rem;
+    margin: 1.5rem 0 1.25rem;
+  }
+  .ping-form input {
+    flex: 1;
+    padding: 0.7rem 0.95rem;
+    font-size: 0.9375rem;
+    font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, monospace;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--card);
+    color: var(--fg);
+  }
+  .ping-form input:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: -1px;
+    border-color: var(--accent);
+  }
+  .ping-form button {
+    padding: 0.7rem 1.25rem;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .ping-form button:hover { opacity: 0.85; }
+  .terminal {
+    margin: 1rem 0 0;
+    padding: 1.25rem 1.5rem;
+    background: #0a0a0a;
+    color: #d8d8d8;
+    border-radius: 12px;
+    font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.85rem;
+    line-height: 1.55;
+    white-space: pre-wrap;
+    overflow-x: auto;
+    min-height: 4rem;
+  }
+  .terminal:empty::before {
+    content: "(no output)";
+    color: #666;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <a class="back" href="/">&lsaquo; Chapters</a>
+    {{if .Solved}}<div class="solved-banner">Challenge completed.</div>{{end}}
+    <p class="eyebrow">Chapter 14</p>
+    <h1>Network Tools</h1>
+    <p class="tagline">Quick-ping a host from inside our network.</p>
+
+    <p>Enter a hostname or IP. The server will run a single ICMP echo against it and show you the result.</p>
+
+    <form class="ping-form" method="POST" action="/cmdi/ping">
+      <input type="text" name="host" placeholder="hostname or IP" value="{{.Host}}" autocomplete="off" required>
+      <button type="submit">Ping</button>
+    </form>
+
+    {{if .HasResult}}
+      <pre class="terminal">{{.Output}}</pre>
+    {{end}}
+
+    <div class="callout">
+      <p><strong>Goal.</strong> Read the contents of <code>./labdata/secrets/cmdi.txt</code>.</p>
+    </div>
+  </div>
+</body>
+</html>

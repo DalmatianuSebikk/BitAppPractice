@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 12 — Admin Console</title>
+<link rel="stylesheet" href="/static/style.css">
+<style>
+  .container { max-width: 760px; }
+  table.users {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    font-size: 0.9375rem;
+  }
+  table.users th, table.users td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  table.users tr:last-child td { border-bottom: none; }
+  table.users th {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--fg-muted);
+    text-transform: uppercase;
+    background: var(--card-hover);
+  }
+  table.users td.id {
+    font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.85rem;
+    color: var(--fg-muted);
+  }
+  table.users tr.you td:first-child {
+    box-shadow: inset 3px 0 0 var(--accent);
+  }
+  .role-pill {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.2rem 0.55rem;
+    background: var(--pill);
+    color: var(--pill-fg);
+    border-radius: 999px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  form.role-form { display: flex; gap: 0.5rem; align-items: center; margin: 0; }
+  form.role-form select {
+    padding: 0.4rem 0.55rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg);
+    color: var(--fg);
+    font-size: 0.875rem;
+    font-family: inherit;
+  }
+  form.role-form button {
+    padding: 0.4rem 0.85rem;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  form.role-form button:hover { opacity: 0.85; }
+  .muted { color: var(--fg-muted); font-size: 0.875rem; }
+</style>
+</head>
+<body>
+  <div class="container">
+    <a class="back" href="/">&lsaquo; Chapters</a>
+    {{if .Solved}}<div class="solved-banner">Challenge completed.</div>{{end}}
+    <p class="eyebrow">Chapter 12</p>
+    <h1>Admin Console</h1>
+    <p class="tagline">Signed in as <code>{{.Requester}}</code> &middot; {{.Role}} &middot; id {{.RequesterID}}</p>
+
+    <p>Manage your team. As a junior admin you can adjust regular users — promote them or revoke privileges.</p>
+
+    <h2>Members</h2>
+    <table class="users">
+      <thead>
+        <tr><th>id</th><th>username</th><th>role</th><th>change to</th></tr>
+      </thead>
+      <tbody>
+        {{range .Users}}
+        <tr {{if eq .ID $.RequesterID}}class="you"{{end}}>
+          <td class="id">#{{.ID}}</td>
+          <td>{{.Username}}</td>
+          <td><span class="role-pill">{{.Role}}</span></td>
+          <td>
+            {{if eq .Role "user"}}
+              <form class="role-form" method="POST" action="/bac/users/{{.ID}}/role">
+                <select name="role">
+                  <option value="user">user</option>
+                  <option value="junior_admin">junior_admin</option>
+                </select>
+                <button type="submit">Update</button>
+              </form>
+            {{else}}
+              <span class="muted">&mdash;</span>
+            {{end}}
+          </td>
+        </tr>
+        {{end}}
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <p><strong>Goal.</strong> Promote yourself to <code>senior_admin</code>.</p>
+    </div>
+  </div>
+</body>
+</html>

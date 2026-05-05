@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 03 — Account Sign-in</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="container">
+    <a class="back" href="/">&lsaquo; Chapters</a>
+    {{if .Solved}}<div class="solved-banner">Challenge completed.</div>{{end}}
+    <p class="eyebrow">Chapter 03</p>
+    <h1>Account Sign-in</h1>
+    <p class="tagline">Two-step verification.</p>
+
+    <p>A friend lent you their work password and forgot to mention they had two-step verification enabled. The system texts them a 6-digit code on every sign-in.</p>
+
+    {{if .User}}
+      {{if .User.MFAPassed}}
+        <div class="welcome">
+          <h2>Welcome, {{.User.Username}}.</h2>
+          <p>You're signed in.</p>
+        </div>
+      {{else}}
+        <form class="login" method="POST" action="/authmfa/verify">
+          {{if .Error}}<p class="error">{{.Error}}</p>{{end}}
+          <p class="muted">A 6-digit code was texted to ••• ••• 0413.</p>
+          <label>
+            <span>Verification code</span>
+            <input class="code" type="text" name="code" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="off" required>
+          </label>
+          <button type="submit">Verify</button>
+        </form>
+      {{end}}
+    {{else}}
+      <form class="login" method="POST" action="/authmfa/login">
+        {{if .Error}}<p class="error">{{.Error}}</p>{{end}}
+        <label>
+          <span>Username</span>
+          <input type="text" name="username" autocomplete="off" required>
+        </label>
+        <label>
+          <span>Password</span>
+          <input type="password" name="password" autocomplete="off" required>
+        </label>
+        <button type="submit">Sign in</button>
+      </form>
+    {{end}}
+
+    <div class="callout">
+      <p><strong>Goal.</strong> Sign in as <code>bob</code> (password <code>bobspass2025</code>).</p>
+    </div>
+  </div>
+</body>
+</html>

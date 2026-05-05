@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 11 — Document Vault</title>
+<link rel="stylesheet" href="/static/style.css">
+<style>
+  .docs { display: flex; flex-direction: column; gap: 0.625rem; }
+  .doc-card {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1rem 1.25rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.2s ease, transform 0.15s ease;
+  }
+  .doc-card:hover { background: var(--card-hover); transform: translateY(-1px); }
+  .doc-card .num {
+    font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.8rem;
+    color: var(--fg-muted);
+    min-width: 2.5rem;
+  }
+  .doc-card .title { flex: 1; font-size: 1rem; font-weight: 500; }
+  .doc-card .arrow {
+    color: var(--fg-muted);
+    font-size: 1.25rem;
+    line-height: 1;
+    transition: transform 0.2s ease, color 0.2s ease;
+  }
+  .doc-card:hover .arrow { transform: translateX(3px); color: var(--accent); }
+</style>
+</head>
+<body>
+  <div class="container">
+    <a class="back" href="/">&lsaquo; Chapters</a>
+    {{if .Solved}}<div class="solved-banner">Challenge completed.</div>{{end}}
+    <p class="eyebrow">Chapter 11</p>
+    <h1>Document Vault</h1>
+    <p class="tagline">Signed in as <code>{{.Owner}}</code>.</p>
+
+    <p>Personal storage for staff. Each document has its own URL — the only way to share is by sending the link.</p>
+
+    <h2>My documents</h2>
+    <div class="docs">
+      {{range .Docs}}
+      <a class="doc-card" href="/idor/doc?id={{.ID}}">
+        <span class="num">#{{.ID}}</span>
+        <span class="title">{{.Title}}</span>
+        <span class="arrow">&rsaquo;</span>
+      </a>
+      {{end}}
+    </div>
+
+    <div class="callout">
+      <p><strong>Goal.</strong> Read the document titled <code>Master Backup Key</code>.</p>
+    </div>
+  </div>
+</body>
+</html>

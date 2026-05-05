@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 18 — User Settings</title>
+<link rel="stylesheet" href="/static/style.css">
+<style>
+  .container { max-width: 720px; }
+  .card {
+    padding: 1.5rem 1.75rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    margin: 1rem 0;
+  }
+  .card h2 { margin: 0 0 0.5rem; font-size: 1.125rem; font-weight: 600; }
+  .card .muted { color: var(--fg-muted); font-size: 0.9rem; margin: 0; }
+  .settings-form {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    margin-top: 1rem;
+  }
+  .settings-form input {
+    flex: 1;
+    padding: 0.625rem 0.85rem;
+    font-size: 0.9375rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: inherit;
+  }
+  .settings-form input:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: -1px;
+    border-color: var(--accent);
+  }
+  .settings-form button {
+    padding: 0.625rem 1.1rem;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .settings-form button:hover { opacity: 0.85; }
+  .id-pill {
+    display: inline-block;
+    font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.8rem;
+    padding: 0.2rem 0.55rem;
+    background: var(--pill);
+    color: var(--pill-fg);
+    border-radius: 4px;
+    margin-left: 0.4rem;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <a class="back" href="/">&lsaquo; Chapters</a>
+    {{if .Solved}}<div class="solved-banner">Challenge completed.</div>{{end}}
+    <p class="eyebrow">Chapter 18</p>
+    <h1>User Settings</h1>
+    <p class="tagline">Signed in as <code>{{.OwnerName}}</code><span class="id-pill">id {{.OwnerID}}</span></p>
+
+    <p>Your profile preferences. The settings API is at <code>/midor/prefs?id=&lt;user-id&gt;</code> and supports <code>GET</code>, <code>POST</code>, and <code>PUT</code>.</p>
+
+    <div class="card">
+      <h2>Display name</h2>
+      <p class="muted">Currently: <strong>{{.DisplayName}}</strong></p>
+      <form class="settings-form" method="POST" action="/midor/prefs?id={{.OwnerID}}">
+        <input type="text" name="display_name" placeholder="New display name" autocomplete="off" required>
+        <button type="submit">Save</button>
+      </form>
+    </div>
+
+    <div class="callout">
+      <p><strong>Goal.</strong> Change another user's display name.</p>
+    </div>
+  </div>
+</body>
+</html>

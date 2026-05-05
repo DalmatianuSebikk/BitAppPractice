@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 19 — BitBounty</title>
+<link rel="stylesheet" href="/static/style.css">
+<style>
+  .container { max-width: 760px; }
+  .tip-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 1.5rem 0 1.5rem;
+  }
+  .tip-form textarea {
+    width: 100%;
+    min-height: 5rem;
+    padding: 0.75rem 1rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 0.9375rem;
+    color: var(--fg);
+    resize: vertical;
+  }
+  .tip-form textarea:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: -1px;
+  }
+  .tip-form button {
+    align-self: flex-end;
+    padding: 0.5rem 1.25rem;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .tip-form button:hover { opacity: 0.85; }
+  .preview {
+    padding: 1rem 1.25rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin: 0 0 1.25rem;
+  }
+  .preview-header {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--fg-muted);
+    text-transform: uppercase;
+    margin: 0 0 0.5rem;
+  }
+  .preview-body { font-size: 0.9375rem; word-break: break-word; }
+  .admin-notice {
+    padding: 0.85rem 1rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.85rem;
+    color: var(--fg-muted);
+    margin: 0 0 1rem;
+  }
+  .boundary { display: none; }
+</style>
+</head>
+<body>
+<div class="container">
+  <a class="back" href="/">&lsaquo; Chapters</a>
+  {{if .Solved}}<div class="solved-banner">Challenge completed.</div>{{end}}
+  <p class="eyebrow">Chapter 19</p>
+  <h1>BitBounty</h1>
+  <p class="tagline">Anonymous tips for the security team.</p>
+
+  <p>Submit a finding. The triage view renders your submission alongside the on-call admin notice.</p>
+
+  <form class="tip-form" method="POST" action="/xsswebhook/submit">
+    <textarea name="body" placeholder="Describe the issue" required></textarea>
+    <button type="submit">Submit tip</button>
+  </form>
+{{if .HasInput}}
+  <div class="preview">
+    <p class="preview-header">Submitted preview</p>
+    <div class="preview-body">{{.Body}}</div>
+  </div>
+{{end}}
+  <p class="admin-notice">Triage queue token: {{.AdminSecret}}</p>
+  <p class="boundary">'</p>
+  <div class="callout">
+    <p><strong>Goal.</strong> Exfiltrate the triage queue token to a webhook you control.</p>
+  </div>
+</div>
+</body>
+</html>

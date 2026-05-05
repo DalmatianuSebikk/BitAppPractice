@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 08 — BitSearch</title>
+<link rel="stylesheet" href="/static/style.css">
+<style>
+  .logo {
+    font-size: clamp(2.5rem, 6vw, 3.5rem);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    text-align: center;
+    background: linear-gradient(180deg, var(--fg) 0%, var(--fg-muted) 180%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 1.5rem 0 1.5rem;
+  }
+  .search-form {
+    display: flex;
+    gap: 0.5rem;
+    margin: 0 auto 2rem;
+    max-width: 520px;
+  }
+  .search-form input {
+    flex: 1;
+    padding: 0.85rem 1.1rem;
+    font-size: 1rem;
+    font-family: inherit;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--card);
+    color: var(--fg);
+  }
+  .search-form input:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: -1px;
+    border-color: var(--accent);
+  }
+  .search-form button {
+    padding: 0.85rem 1.5rem;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .search-form button:hover { opacity: 0.85; }
+  .results-header {
+    font-size: 0.95rem;
+    color: var(--fg-muted);
+    margin: 0 0 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .results { display: flex; flex-direction: column; gap: 0.75rem; }
+  .result {
+    display: block;
+    padding: 1rem 1.25rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.2s ease;
+  }
+  .result:hover { background: var(--card-hover); }
+  .result h3 {
+    margin: 0 0 0.25rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .result p { margin: 0; font-size: 0.875rem; color: var(--fg-muted); }
+</style>
+</head>
+<body>
+  <div class="container">
+    <a class="back" href="/">&lsaquo; Chapters</a>
+    {{if .Solved}}<div class="solved-banner">Challenge completed.</div>{{end}}
+    <p class="eyebrow">Chapter 08</p>
+    <h1 class="logo">BitSearch</h1>
+
+    <form class="search-form" method="GET" action="/xssrefl/">
+      <input type="search" name="q" value="{{.QueryEscaped}}" placeholder="Search the web" autocomplete="off">
+      <button type="submit">Search</button>
+    </form>
+
+    {{if .HasQuery}}
+      <p class="results-header">Results for: {{.Query}}</p>
+      <div class="results">
+        {{range .Results}}
+        <a class="result" href="{{.URL}}">
+          <h3>{{.Title}}</h3>
+          <p>{{.Snip}}</p>
+        </a>
+        {{end}}
+      </div>
+    {{end}}
+
+    <div class="callout">
+      <p><strong>Goal.</strong> Get the page to execute your JavaScript.</p>
+    </div>
+  </div>
+</body>
+</html>

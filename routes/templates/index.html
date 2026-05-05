@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PracticaBitApp</title>
+<link rel="stylesheet" href="/static/style.css">
+<style>
+  .container { padding: 6rem 1.5rem 4rem; }
+  .hero { text-align: center; margin-bottom: 4rem; }
+  .hero h1 {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    background: linear-gradient(180deg, var(--fg) 0%, var(--fg-muted) 180%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero .subtitle {
+    font-size: 1.125rem;
+    color: var(--fg-muted);
+    margin: 0;
+    font-weight: 400;
+  }
+  .chapters { display: flex; flex-direction: column; gap: 0.625rem; }
+  .chapter {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.2s ease, transform 0.15s ease, border-color 0.2s ease;
+  }
+  .chapter:hover { background: var(--card-hover); transform: translateY(-1px); }
+  .chapter.locked { pointer-events: none; opacity: 0.55; }
+  .chapter .num {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--fg-muted);
+    text-transform: uppercase;
+    min-width: 5rem;
+  }
+  .chapter .body { flex: 1; min-width: 0; }
+  .chapter .title {
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+  .chapter .desc {
+    font-size: 0.9375rem;
+    color: var(--fg-muted);
+    margin: 0.125rem 0 0;
+  }
+  .chapter .arrow {
+    color: var(--fg-muted);
+    font-size: 1.5rem;
+    line-height: 1;
+    transition: transform 0.2s ease, color 0.2s ease;
+  }
+  .chapter:hover .arrow { transform: translateX(3px); color: var(--accent); }
+</style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <h1>Bitdefender: Web Security</h1>
+      <p class="subtitle">A field guide to web vulnerabilities.</p>
+    </header>
+    <main class="chapters">
+      {{range .}}
+      <a class="chapter {{if not .Available}}locked{{end}}" href="{{if .Available}}/{{.Slug}}/{{else}}#{{end}}">
+        <div class="num">Chapter {{printf "%02d" .Number}}</div>
+        <div class="body">
+          <p class="title">{{.Title}}</p>
+          <p class="desc">{{.Description}}</p>
+        </div>
+        {{if not .Available}}<span class="pill">Locked</span>{{else if .Solved}}<span class="pill solved">Solved</span>{{else}}<span class="arrow">&rsaquo;</span>{{end}}
+      </a>
+      {{end}}
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 07 — BitCheck API</title>
+<link rel="stylesheet" href="/static/style.css">
+<style>
+  .api-form {
+    display: flex;
+    gap: 0.5rem;
+    margin: 1.5rem 0 2rem;
+    max-width: 480px;
+  }
+  .api-form input {
+    flex: 1;
+    padding: 0.7rem 0.95rem;
+    font-size: 0.9375rem;
+    font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, monospace;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--card);
+    color: var(--fg);
+  }
+  .api-form input:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: -1px;
+    border-color: var(--accent);
+  }
+  .api-form button {
+    padding: 0.7rem 1.25rem;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .api-form button:hover { opacity: 0.85; }
+  .api-result {
+    padding: 1.25rem 1.5rem;
+    border-radius: 12px;
+    font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, monospace;
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+    margin: 0 0 1rem;
+    max-width: 480px;
+  }
+  .api-result.ok {
+    background: rgba(52, 199, 89, 0.10);
+    color: var(--solved-fg);
+    border: 1px solid rgba(52, 199, 89, 0.25);
+  }
+  .api-result.notfound {
+    background: var(--card);
+    color: var(--fg-muted);
+    border: 1px solid var(--border);
+  }
+  @media (prefers-color-scheme: dark) {
+    .api-result.ok {
+      background: rgba(48, 209, 88, 0.12);
+      border-color: rgba(48, 209, 88, 0.3);
+    }
+  }
+  .docs {
+    font-size: 0.875rem;
+    color: var(--fg-muted);
+    line-height: 1.6;
+    margin-top: 0.75rem;
+  }
+  .docs code { font-size: 0.8125rem; }
+</style>
+</head>
+<body>
+  <div class="container">
+    <a class="back" href="/">&lsaquo; Chapters</a>
+    {{if .Solved}}<div class="solved-banner">Challenge completed.</div>{{end}}
+    <p class="eyebrow">Chapter 07</p>
+    <h1>BitCheck API</h1>
+    <p class="tagline">Verify that an article id exists.</p>
+
+    <p>Internal endpoint used by partners to check whether a given article still exists in our archive. Sends back <code>OK</code> or <code>Not found</code>; no payload, no errors.</p>
+
+    <form class="api-form" method="GET" action="/sqlitime/">
+      <input type="text" name="id" placeholder="article id" value="{{.QueryID}}" autocomplete="off">
+      <button type="submit">Check</button>
+    </form>
+
+    {{if .HasQuery}}
+      {{if .Found}}
+        <div class="api-result ok">OK</div>
+      {{else}}
+        <div class="api-result notfound">Not found</div>
+      {{end}}
+    {{end}}
+
+    <div class="callout">
+      <p><strong>Goal.</strong> Recover the database engine's version string.</p>
+    </div>
+  </div>
+</body>
+</html>

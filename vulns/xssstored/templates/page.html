@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 09 — DevTok</title>
+<link rel="stylesheet" href="/static/style.css">
+<style>
+  .container { max-width: 760px; }
+  .video-player {
+    position: relative;
+    aspect-ratio: 16/9;
+    background: linear-gradient(135deg, #2a2a2d, #1d1d1f);
+    border-radius: 14px;
+    margin: 1.5rem 0 1.25rem;
+  }
+  .video-player::before {
+    content: "▶";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 3.5rem;
+    line-height: 1;
+  }
+  .video-meta {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    color: var(--fg-muted);
+    font-size: 0.9rem;
+    margin: 0 0 1.5rem;
+  }
+  .video-meta .channel {
+    font-weight: 600;
+    color: var(--fg);
+  }
+  .comments-header {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 2rem 0 0.75rem;
+    color: var(--fg-muted);
+  }
+  .comment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 0 0 1.5rem;
+  }
+  .comment-form textarea {
+    width: 100%;
+    min-height: 4rem;
+    padding: 0.75rem 1rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 0.9375rem;
+    color: var(--fg);
+    resize: vertical;
+  }
+  .comment-form textarea:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: -1px;
+  }
+  .comment-form button {
+    align-self: flex-end;
+    padding: 0.5rem 1.25rem;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .comment-form button:hover { opacity: 0.85; }
+  .comments {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .comment {
+    display: flex;
+    gap: 0.85rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .comment:last-child { border-bottom: none; }
+  .avatar {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    background: var(--card-hover);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--fg-muted);
+    flex-shrink: 0;
+    text-transform: uppercase;
+  }
+  .comment-content { flex: 1; min-width: 0; }
+  .comment-byline {
+    font-size: 0.85rem;
+    color: var(--fg-muted);
+    margin: 0 0 0.25rem;
+  }
+  .comment-byline .author {
+    color: var(--fg);
+    font-weight: 600;
+    margin-right: 0.5rem;
+  }
+  .comment-body {
+    font-size: 0.9375rem;
+    word-break: break-word;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <a class="back" href="/">&lsaquo; Chapters</a>
+    {{if .Solved}}<div class="solved-banner">Challenge completed.</div>{{end}}
+    <p class="eyebrow">Chapter 09</p>
+    <h1>How to debug at 2 AM</h1>
+
+    <div class="video-player"></div>
+
+    <p class="video-meta"><span class="channel">DevTok</span> &middot; 4.2M views &middot; 2 weeks ago</p>
+
+    <h2 class="comments-header">{{.Count}} comments</h2>
+
+    <form class="comment-form" method="POST" action="/xssstored/comment">
+      <textarea name="body" placeholder="Add a comment&hellip;" required></textarea>
+      <button type="submit">Comment</button>
+    </form>
+
+    <div class="comments">
+      {{range .Comments}}
+      <div class="comment">
+        <div class="avatar">{{slice .Author 0 1}}</div>
+        <div class="comment-content">
+          <p class="comment-byline">
+            <span class="author">{{.Author}}</span>
+            <span>{{.Relative}}</span>
+          </p>
+          <div class="comment-body">{{.Body}}</div>
+        </div>
+      </div>
+      {{end}}
+    </div>
+
+    <div class="callout">
+      <p><strong>Goal.</strong> Get the page to execute JavaScript that survives a refresh.</p>
+    </div>
+  </div>
+</body>
+</html>

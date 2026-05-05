@@ -1,0 +1,25 @@
+services:
+  app:
+    build: .
+    image: practicabitapp:latest
+    container_name: practicabitapp
+    ports:
+      - "9998:9998"
+    restart: unless-stopped
+
+    # Fresh state per `docker compose up`:
+    # the SQLite seeds and labdata files are recreated on every container
+    # start, which matches the lab's expected behavior (a known-good
+    # baseline so a previous student's payloads don't bleed into the next
+    # session). To persist instead, uncomment the volumes block below.
+    #
+    # volumes:
+    #   - ./practica.db:/app/practica.db
+    #   - ./labdata:/app/labdata
+
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:9998/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s

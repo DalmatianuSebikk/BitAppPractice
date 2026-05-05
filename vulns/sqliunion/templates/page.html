@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 05 — BitNews</title>
+<link rel="stylesheet" href="/static/style.css">
+<style>
+  .feed { display: flex; flex-direction: column; gap: 0.625rem; }
+  .article-card {
+    display: block;
+    padding: 1rem 1.25rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.2s ease, transform 0.15s ease;
+  }
+  .article-card:hover { background: var(--card-hover); transform: translateY(-1px); }
+  .article-card h3 { margin: 0 0 0.25rem; font-size: 1rem; font-weight: 600; }
+  .article-card .meta { font-size: 0.85rem; color: var(--fg-muted); margin: 0; }
+  .article-detail {
+    padding: 1.5rem 1.75rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    margin-bottom: 0.75rem;
+  }
+  .article-detail .meta {
+    font-size: 0.85rem;
+    color: var(--fg-muted);
+    margin: 0 0 0.5rem;
+  }
+  .article-detail h2 { margin: 0 0 1rem; font-size: 1.5rem; font-weight: 600; letter-spacing: -0.015em; }
+  .article-detail .body { font-size: 1rem; line-height: 1.6; white-space: pre-wrap; }
+  .empty {
+    padding: 1.5rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    color: var(--fg-muted);
+    text-align: center;
+  }
+  .all-link { display: inline-block; margin-top: 1.5rem; color: var(--accent); text-decoration: none; font-weight: 500; }
+  .all-link:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+  <div class="container">
+    <a class="back" href="/">&lsaquo; Chapters</a>
+    {{if .Solved}}<div class="solved-banner">Challenge completed.</div>{{end}}
+    <p class="eyebrow">Chapter 05</p>
+    <h1>BitNews</h1>
+
+    {{if .HasQuery}}
+      <p class="tagline">Article #{{.QueryID}}</p>
+      {{if .Articles}}
+        {{range .Articles}}
+        <div class="article-detail">
+          <p class="meta">By {{.Author}} &middot; {{.Posted}}</p>
+          <h2>{{.Title}}</h2>
+          <div class="body">{{.Body}}</div>
+        </div>
+        {{end}}
+      {{else}}
+        <div class="empty">No article found.</div>
+      {{end}}
+      <a class="all-link" href="/sqliunion/">&larr; All articles</a>
+    {{else}}
+      <p class="tagline">Tech news, no algorithm.</p>
+      <div class="feed">
+        {{range .Articles}}
+        <a class="article-card" href="/sqliunion/?id={{.ID}}">
+          <h3>{{.Title}}</h3>
+          <p class="meta">{{.Author}} &middot; {{.Posted}}</p>
+        </a>
+        {{end}}
+      </div>
+    {{end}}
+
+    <div class="callout">
+      <p><strong>Goal.</strong> Recover the admin's password.</p>
+    </div>
+  </div>
+</body>
+</html>

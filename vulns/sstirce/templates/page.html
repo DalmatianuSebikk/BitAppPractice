@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 17 — Status Banner</title>
+<link rel="stylesheet" href="/static/style.css">
+<style>
+  .container { max-width: 760px; }
+  .composer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin: 1.5rem 0 1.25rem;
+  }
+  .composer textarea {
+    width: 100%;
+    min-height: 6rem;
+    padding: 0.85rem 1rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.9rem;
+    color: var(--fg);
+    resize: vertical;
+    line-height: 1.5;
+  }
+  .composer textarea:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: -1px;
+    border-color: var(--accent);
+  }
+  .composer button {
+    align-self: flex-end;
+    padding: 0.6rem 1.5rem;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .composer button:hover { opacity: 0.85; }
+  .placeholders {
+    margin: 0;
+    padding: 0.75rem 1rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 0.85rem;
+    color: var(--fg-muted);
+    line-height: 1.6;
+  }
+  .placeholders code { font-size: 0.8125rem; }
+  .preview {
+    margin: 1rem 0 0;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--card);
+  }
+  .preview-header {
+    padding: 0.75rem 1.25rem;
+    background: var(--card-hover);
+    border-bottom: 1px solid var(--border);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--fg-muted);
+    text-transform: uppercase;
+  }
+  .preview-body {
+    padding: 1.25rem 1.5rem;
+    font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.85rem;
+    line-height: 1.55;
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-x: auto;
+  }
+  .err {
+    padding: 1rem 1.25rem;
+    background: rgba(215, 0, 21, 0.08);
+    border: 1px solid rgba(215, 0, 21, 0.2);
+    border-radius: 12px;
+    color: var(--error);
+    font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.85rem;
+    word-break: break-word;
+  }
+  @media (prefers-color-scheme: dark) {
+    .err {
+      background: rgba(255, 69, 58, 0.10);
+      border-color: rgba(255, 69, 58, 0.25);
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <a class="back" href="/">&lsaquo; Chapters</a>
+    {{if .Solved}}<div class="solved-banner">Challenge completed.</div>{{end}}
+    <p class="eyebrow">Chapter 17</p>
+    <h1>Status Banner</h1>
+    <p class="tagline">Compose the on-call status banner.</p>
+
+    <p>The banner runs against the on-call admin context. Field placeholders render live values; ops keep a few helper methods on the same context for quick debug readouts.</p>
+
+    <p class="placeholders">
+      Fields: <code>{{`{{.Username}}`}}</code>, <code>{{`{{.Team}}`}}</code>, <code>{{`{{.Status}}`}}</code>
+    </p>
+
+    <form class="composer" method="POST" action="/sstirce/">
+      <textarea name="banner" placeholder='Status: {{`{{.Status}}`}} on team {{`{{.Team}}`}}' autocomplete="off">{{.Input}}</textarea>
+      <button type="submit">Preview</button>
+    </form>
+
+    {{if .HasInput}}
+      {{if .Error}}
+        <div class="err">{{.Error}}</div>
+      {{else}}
+        <div class="preview">
+          <div class="preview-header">Preview</div>
+          <div class="preview-body">{{.Rendered}}</div>
+        </div>
+      {{end}}
+    {{end}}
+
+    <div class="callout">
+      <p><strong>Goal.</strong> Recover the contents of <code>./labdata/secrets/sstirce.txt</code>.</p>
+    </div>
+  </div>
+</body>
+</html>

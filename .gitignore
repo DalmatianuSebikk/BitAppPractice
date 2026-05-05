@@ -1,0 +1,30 @@
+# ── solve guides ─────────────────────────────────────────────────────────
+# Per-chapter READMEs are instructor notes with reference payloads and
+# step-by-step walkthroughs. They must not ship to the public repo.
+# The top-level README.md is descriptive only and is intentionally tracked.
+vulns/*/README.md
+
+# ── runtime state ────────────────────────────────────────────────────────
+# SQLite DB and on-disk lab files are recreated on startup; nothing here
+# should ever be committed.
+practica.db
+labdata/
+
+# ── personal notes ───────────────────────────────────────────────────────
+solves.txt
+NOTES.md
+notes.md
+
+# ── build artifacts ──────────────────────────────────────────────────────
+/practicabitapp
+*.exe
+*.test
+*.out
+coverage.txt
+
+# ── editor / OS ──────────────────────────────────────────────────────────
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*.swo

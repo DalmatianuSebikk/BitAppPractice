@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 06 — BitShop</title>
+<link rel="stylesheet" href="/static/style.css">
+<style>
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.75rem; }
+  .product-card {
+    display: block;
+    padding: 1rem 1.25rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.2s ease, transform 0.15s ease;
+  }
+  .product-card:hover { background: var(--card-hover); transform: translateY(-1px); }
+  .product-card .name { font-weight: 600; margin: 0 0 0.25rem; font-size: 0.95rem; }
+  .product-card .price { color: var(--accent); font-weight: 600; margin: 0; font-size: 0.9rem; }
+  .product-detail {
+    padding: 1.5rem 1.75rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    margin-bottom: 0.75rem;
+  }
+  .product-detail h2 { margin: 0 0 0.5rem; font-size: 1.5rem; font-weight: 600; }
+  .product-detail .price { color: var(--accent); font-weight: 600; font-size: 1.125rem; margin: 0 0 0.75rem; }
+  .product-detail .desc { font-size: 0.95rem; color: var(--fg-muted); margin: 0; }
+  .empty {
+    padding: 1.5rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    color: var(--fg-muted);
+    text-align: center;
+  }
+  .db-error {
+    padding: 1rem 1.25rem;
+    background: rgba(215, 0, 21, 0.08);
+    border: 1px solid rgba(215, 0, 21, 0.2);
+    border-radius: 12px;
+    color: var(--error);
+    font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.85rem;
+    margin: 0.5rem 0 1rem;
+    word-break: break-word;
+    white-space: pre-wrap;
+  }
+  .db-error::before {
+    content: "Database error: ";
+    font-weight: 700;
+  }
+  @media (prefers-color-scheme: dark) {
+    .db-error {
+      background: rgba(255, 69, 58, 0.10);
+      border-color: rgba(255, 69, 58, 0.25);
+    }
+  }
+  .all-link { display: inline-block; margin-top: 1.5rem; color: var(--accent); text-decoration: none; font-weight: 500; }
+  .all-link:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+  <div class="container">
+    <a class="back" href="/">&lsaquo; Chapters</a>
+    {{if .Solved}}<div class="solved-banner">Challenge completed.</div>{{end}}
+    <p class="eyebrow">Chapter 06</p>
+    <h1>BitShop</h1>
+
+    {{if .HasQuery}}
+      <p class="tagline">Item #{{.QueryID}}</p>
+      {{if .DBError}}
+        <div class="db-error">{{.DBError}}</div>
+      {{end}}
+      {{if .Products}}
+        {{range .Products}}
+        <div class="product-detail">
+          <h2>{{.Name}}</h2>
+          <p class="price">{{.Price}}</p>
+          <p class="desc">{{.Desc}}</p>
+        </div>
+        {{end}}
+      {{else}}
+        {{if not .DBError}}
+          <div class="empty">No item found.</div>
+        {{end}}
+      {{end}}
+      <a class="all-link" href="/sqlierror/">&larr; All items</a>
+    {{else}}
+      <p class="tagline">Office hardware, fairly priced.</p>
+      <div class="grid">
+        {{range .Products}}
+        <a class="product-card" href="/sqlierror/?id={{.ID}}">
+          <p class="name">{{.Name}}</p>
+          <p class="price">{{.Price}}</p>
+        </a>
+        {{end}}
+      </div>
+    {{end}}
+
+    <div class="callout">
+      <p><strong>Goal.</strong> Recover the admin's password.</p>
+    </div>
+  </div>
+</body>
+</html>

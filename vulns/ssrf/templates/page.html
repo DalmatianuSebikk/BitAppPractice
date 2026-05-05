@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 15 — BitFetch</title>
+<link rel="stylesheet" href="/static/style.css">
+<style>
+  .container { max-width: 760px; }
+  .ssrf-form {
+    display: flex;
+    gap: 0.5rem;
+    margin: 1.5rem 0 1.25rem;
+  }
+  .ssrf-form input {
+    flex: 1;
+    padding: 0.7rem 0.95rem;
+    font-size: 0.9375rem;
+    font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, monospace;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--card);
+    color: var(--fg);
+  }
+  .ssrf-form input:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: -1px;
+    border-color: var(--accent);
+  }
+  .ssrf-form button {
+    padding: 0.7rem 1.25rem;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .ssrf-form button:hover { opacity: 0.85; }
+  .response {
+    margin: 1rem 0 0;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--card);
+  }
+  .response-header {
+    padding: 0.75rem 1.25rem;
+    background: var(--card-hover);
+    border-bottom: 1px solid var(--border);
+    font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.85rem;
+    color: var(--fg-muted);
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .response-header .url {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+    min-width: 0;
+  }
+  .response-body {
+    padding: 1.25rem 1.5rem;
+    font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.85rem;
+    line-height: 1.55;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+    max-height: 24rem;
+    overflow-y: auto;
+  }
+  .err {
+    padding: 1rem 1.25rem;
+    background: rgba(215, 0, 21, 0.08);
+    border: 1px solid rgba(215, 0, 21, 0.2);
+    border-radius: 12px;
+    color: var(--error);
+    font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.85rem;
+  }
+  @media (prefers-color-scheme: dark) {
+    .err {
+      background: rgba(255, 69, 58, 0.10);
+      border-color: rgba(255, 69, 58, 0.25);
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <a class="back" href="/">&lsaquo; Chapters</a>
+    {{if .Solved}}<div class="solved-banner">Challenge completed.</div>{{end}}
+    <p class="eyebrow">Chapter 15</p>
+    <h1>BitFetch</h1>
+    <p class="tagline">Preview any URL.</p>
+
+    <p>Paste a URL. The server will fetch it for you and show the response. Useful for previewing links before you click them.</p>
+
+    <form class="ssrf-form" method="GET" action="/ssrf/">
+      <input type="text" name="url" placeholder="https://&hellip;" value="{{.URL}}" autocomplete="off">
+      <button type="submit">Fetch</button>
+    </form>
+
+    {{if .HasResult}}
+      {{if .Error}}
+        <div class="err">{{.Error}}</div>
+      {{else}}
+        <div class="response">
+          <div class="response-header">
+            <span class="url">{{.URL}}</span>
+            <span>{{.Status}}</span>
+          </div>
+          <pre class="response-body">{{.Body}}</pre>
+        </div>
+      {{end}}
+    {{end}}
+
+    <div class="callout">
+      <p><strong>Goal.</strong> Reach our internal admin gateway.</p>
+    </div>
+  </div>
+</body>
+</html>

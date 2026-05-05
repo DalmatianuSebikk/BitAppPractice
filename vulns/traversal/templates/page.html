@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 13 — Docs Viewer</title>
+<link rel="stylesheet" href="/static/style.css">
+<style>
+  .container { max-width: 760px; }
+  .doc-list { display: flex; flex-direction: column; gap: 0.5rem; margin: 1.5rem 0 1.25rem; }
+  .doc-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    text-decoration: none;
+    color: inherit;
+    font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.9rem;
+    transition: background 0.15s ease;
+  }
+  .doc-link:hover { background: var(--card-hover); }
+  .doc-link::before { content: "📄"; font-size: 0.95rem; }
+  .doc-view {
+    margin: 1.25rem 0 0;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--card);
+  }
+  .doc-view-header {
+    padding: 0.75rem 1.25rem;
+    background: var(--card-hover);
+    border-bottom: 1px solid var(--border);
+    font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.85rem;
+    color: var(--fg-muted);
+  }
+  .doc-view-body {
+    padding: 1.25rem 1.5rem;
+    white-space: pre-wrap;
+    font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.875rem;
+    line-height: 1.55;
+    overflow-x: auto;
+  }
+  .doc-error {
+    padding: 1rem 1.25rem;
+    background: rgba(215, 0, 21, 0.08);
+    border: 1px solid rgba(215, 0, 21, 0.2);
+    border-radius: 12px;
+    color: var(--error);
+    font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.85rem;
+  }
+  @media (prefers-color-scheme: dark) {
+    .doc-error {
+      background: rgba(255, 69, 58, 0.10);
+      border-color: rgba(255, 69, 58, 0.25);
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <a class="back" href="/">&lsaquo; Chapters</a>
+    {{if .Solved}}<div class="solved-banner">Challenge completed.</div>{{end}}
+    <p class="eyebrow">Chapter 13</p>
+    <h1>Docs Viewer</h1>
+    <p class="tagline">Bring up any document by name.</p>
+
+    <p>The viewer renders text files served from the docs root. Pick one from the list, or type a filename in the URL.</p>
+
+    <div class="doc-list">
+      {{range .Files}}
+      <a class="doc-link" href="/traversal/?file={{.}}">{{.}}</a>
+      {{end}}
+    </div>
+
+    {{if .Current}}
+      {{if .Error}}
+        <div class="doc-error">{{.Error}}</div>
+      {{else}}
+        <div class="doc-view">
+          <div class="doc-view-header">{{.Current}}</div>
+          <pre class="doc-view-body">{{.Content}}</pre>
+        </div>
+      {{end}}
+    {{end}}
+
+    <div class="callout">
+      <p><strong>Goal.</strong> Read a file outside the docs root.</p>
+    </div>
+  </div>
+</body>
+</html>

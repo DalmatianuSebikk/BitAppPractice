@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 04 — Internal Dashboard</title>
+<link rel="stylesheet" href="/static/style.css">
+<style>
+  .panel {
+    padding: 1.5rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    margin: 1.25rem 0;
+  }
+  .panel h2 { margin: 0 0 0.5rem; font-size: 1.25rem; font-weight: 600; }
+  .panel .muted { margin: 0 0 1rem; color: var(--fg-muted); font-size: 0.9375rem; }
+  .panel details { margin: 1rem 0; }
+  .panel summary { cursor: pointer; color: var(--fg-muted); font-size: 0.9rem; user-select: none; }
+  .panel summary:hover { color: var(--accent); }
+  .panel .token {
+    margin: 0.75rem 0 0;
+    padding: 0.85rem;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.78rem;
+    overflow-x: auto;
+    word-break: break-all;
+    white-space: pre-wrap;
+    color: var(--fg-muted);
+  }
+  .panel a.link { color: var(--accent); text-decoration: none; font-weight: 500; }
+  .panel a.link:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+  <div class="container">
+    <a class="back" href="/">&lsaquo; Chapters</a>
+    {{if .Solved}}<div class="solved-banner">Challenge completed.</div>{{end}}
+    <p class="eyebrow">Chapter 04</p>
+
+    {{if eq .State "admin"}}
+      <h1>Admin Panel</h1>
+      <p class="tagline">Authorized.</p>
+      <div class="panel">
+        <h2>Hi, {{.Username}}</h2>
+        <p class="muted">Welcome to the admin panel. Sensitive controls would live here.</p>
+      </div>
+    {{else if eq .State "loggedin"}}
+      <h1>Internal Dashboard</h1>
+      <p class="tagline">Welcome back.</p>
+      <div class="panel">
+        <h2>Hi, {{.Username}}</h2>
+        <p class="muted">Role: <code>{{.Role}}</code></p>
+        <details>
+          <summary>Your session token</summary>
+          <pre class="token">{{.Token}}</pre>
+        </details>
+        <p style="margin-top: 1.25rem;"><a class="link" href="/authjwt/admin">Open admin panel &rsaquo;</a></p>
+      </div>
+      <div class="callout">
+        <p><strong>Goal.</strong> Reach the admin panel.</p>
+      </div>
+    {{else}}
+      <h1>Internal Dashboard</h1>
+      <p class="tagline">Token-based sign-in for the team.</p>
+      <p>Use your work credentials. Tokens expire after 24 hours.</p>
+      <form class="login" method="POST" action="/authjwt/login">
+        {{if .Error}}<p class="error">{{.Error}}</p>{{end}}
+        <label>
+          <span>Username</span>
+          <input type="text" name="username" autocomplete="off" required>
+        </label>
+        <label>
+          <span>Password</span>
+          <input type="password" name="password" autocomplete="off" required>
+        </label>
+        <button type="submit">Sign in</button>
+      </form>
+      <div class="callout">
+        <p><strong>Goal.</strong> Reach the admin panel. Sign in with <code>alice</code> / <code>alice</code> to start.</p>
+      </div>
+    {{end}}
+  </div>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 02 — Bruteforce Login</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="container">
+    <a class="back" href="/">&lsaquo; Chapters</a>
+    {{if .Solved}}<div class="solved-banner">Challenge completed.</div>{{end}}
+    <p class="eyebrow">Chapter 02</p>
+    <h1>Staff Portal</h1>
+    <p class="tagline">Sign in to continue.</p>
+
+    <p>Internal admin tools. We don't publish staff credentials, but everyone in the office knows our admin's still using the same password they set up the account with three years ago.</p>
+
+    {{if .CurrentUser}}
+      <div class="welcome">
+        <h2>Welcome, {{.CurrentUser}}.</h2>
+        <p>You're signed in.</p>
+      </div>
+    {{else}}
+      <form class="login" method="POST" action="/authbrute/login">
+        {{if .Error}}<p class="error">{{.Error}}</p>{{end}}
+        <label>
+          <span>Username</span>
+          <input type="text" name="username" autocomplete="off" required>
+        </label>
+        <label>
+          <span>Password</span>
+          <input type="password" name="password" autocomplete="off" required>
+        </label>
+        <button type="submit">Sign in</button>
+      </form>
+    {{end}}
+
+    <div class="callout">
+      <p><strong>Goal.</strong> Sign in as <code>admin</code>.</p>
+    </div>
+  </div>
+</body>
+</html>

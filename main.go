@@ -255,7 +255,7 @@ func main() {
 	mux := http.NewServeMux()
 	routes.Register(mux, db)
 
-	addr := ":9998"
+	addr := ":9997"
 	log.Printf("listening on %s", addr)
 	log.Fatal(http.ListenAndServe(addr, mux))
 }

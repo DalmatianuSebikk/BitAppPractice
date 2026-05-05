@@ -124,7 +124,7 @@ func Verify(w http.ResponseWriter, r *http.Request) {
 
 	sidCookie, err := r.Cookie("authmfa_session")
 	if err != nil {
-		http.Redirect(w, r, "/authmfa/", http.StatusFound)
+		http.Error(w, "no session", http.StatusUnauthorized)
 		return
 	}
 
@@ -132,12 +132,13 @@ func Verify(w http.ResponseWriter, r *http.Request) {
 	s, ok := sessions.m[sidCookie.Value]
 	if !ok {
 		sessions.Unlock()
-		http.Redirect(w, r, "/authmfa/", http.StatusFound)
+		http.Error(w, "no session", http.StatusUnauthorized)
 		return
 	}
 	if s.MFAPassed {
 		sessions.Unlock()
-		http.Redirect(w, r, "/authmfa/", http.StatusFound)
+		w.WriteHeader(http.StatusOK)
+		render(w, r, "")
 		return
 	}
 	if s.OTP != code {
@@ -147,6 +148,7 @@ func Verify(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	s.MFAPassed = true
+	s.OTP = ""
 	sessions.Unlock()
 
 	http.SetCookie(w, &http.Cookie{
